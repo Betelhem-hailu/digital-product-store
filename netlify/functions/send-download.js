@@ -2,6 +2,8 @@ import crypto from "crypto";
 import { getStore } from "@netlify/blobs";
 
 const DOWNLOAD_SECRET = process.env.DOWNLOAD_SECRET;
+const SITE_ID_ACCESS = process.env.SITE_ID_ACCESS;
+const TOKEN_ACCESS = process.env.TOKEN_ACCESS;
 
 function verifyToken(token) {
   try {
@@ -64,7 +66,11 @@ export default async (req) => {
     }
 
     // ===== Get the file from Netlify Blobs =====
-    const store = getStore("digital-products");
+    const store = getStore({
+    name: "digital-products",
+    siteID: SITE_ID_ACCESS,
+    token: TOKEN_ACCESS,
+  });
 
     // Try to get the file
     const file = await store.get("Product_01.pdf", {
