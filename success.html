@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Successful – Download Ready</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0a0a0a;
+      color: #f5f5f5;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 520px;
+      width: 100%;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    h1 span {
+      color: #a3e635;
+    }
+
+    .subtitle {
+      color: #a3a3a3;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 16px;
+      padding: 32px 24px;
+      margin-bottom: 24px;
+    }
+
+    .download-btn {
+      display: inline-block;
+      background: #a3e635;
+      color: #000;
+      text-decoration: none;
+      padding: 16px 32px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      transition: background 0.2s;
+    }
+
+    .download-btn:hover {
+      background: #bef264;
+    }
+
+    .email-note {
+      margin-top: 20px;
+      color: #888;
+      font-size: 0.95rem;
+    }
+
+    .email-note strong {
+      color: #ccc;
+    }
+
+    .back-link {
+      color: #666;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">✅</div>
+    <h1>Payment <span>Verified</span></h1>
+    <p class="subtitle">Your download is ready.</p>
+
+    <div class="card">
+      <a id="downloadBtn" href="#" class="download-btn">Download Your Product</a>
+
+      <p class="email-note">
+        We also sent the link to<br>
+        <strong id="customerEmail">your email</strong>
+      </p>
+    </div>
+
+    <a href="/" class="back-link">← Back to home</a>
+  </div>
+
+  <script>
+    const downloadUrl = sessionStorage.getItem("downloadUrl");
+    const email = sessionStorage.getItem("customerEmail");
+
+    const downloadBtn = document.getElementById("downloadBtn");
+    const emailEl = document.getElementById("customerEmail");
+
+    if (email) {
+      emailEl.textContent = email;
+    }
+
+    if (downloadUrl) {
+      downloadBtn.href = downloadUrl;
+    } else {
+      // Fallback if someone opens success.html directly
+      downloadBtn.textContent = "Download link not found";
+      downloadBtn.style.background = "#444";
+      downloadBtn.style.color = "#999";
+      downloadBtn.style.pointerEvents = "none";
+    }
+
+    // Optional: clear the data after showing it
+    // sessionStorage.removeItem("downloadUrl");
+    // sessionStorage.removeItem("customerEmail");
+  </script>
+</body>
+</html>
