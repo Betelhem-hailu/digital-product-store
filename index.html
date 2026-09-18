@@ -219,25 +219,25 @@
     }
 
     .message {
-      margin-top: 20px;
-      padding: 14px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      display: none;
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    display: none; /* important */
     }
 
     .message.success {
-      background: #14261a;
-      border: 1px solid #166534;
-      color: #86efac;
-      display: block;
+    background: #14261a;
+    border: 1px solid #166534;
+    color: #86efac;
+    display: block;
     }
 
     .message.error {
-      background: #2a1215;
-      border: 1px solid #7f1d1d;
-      color: #fca5a5;
-      display: block;
+    background: #2a1215;
+    border: 1px solid #7f1d1d;
+    color: #fca5a5;
+    display: block;
     }
 
     footer {
@@ -283,12 +283,12 @@
 
         <div class="account-box">
           <div style="color:#888; font-size:0.85rem; margin-bottom:6px;">Telebirr</div>
-          <strong>0931 620 143</strong>
+          <strong></strong>
         </div>
 
         <div class="account-box">
           <div style="color:#888; font-size:0.85rem; margin-bottom:6px;">CBE Account</div>
-          <strong>1000 3747 11788</strong>
+          <strong></strong>
         </div>
       </div>
     </div>
@@ -356,7 +356,7 @@
     const CBE_ACCOUNT_NAME = "${process.env.CBE_ACCOUNT_NAME}";
 
     //add to html
-    document.querySelector(".price").innerHTML = `${NEW_PRICE} <small>ETB</small> <span class="old-price">${OLD_PRICE} ETB</span>`;
+    document.querySelector(".price-box .price").innerHTML = `${NEW_PRICE} <small>ETB</small> <span class="old-price">${OLD_PRICE} ETB</span>`;
 
 
     document.querySelector(".account-box strong").textContent = process.env.TELEBIRR_NUMBER;
