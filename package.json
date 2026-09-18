@@ -1,0 +1,9 @@
+{
+  "name": "digital-product-store",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "resend": "^4.0.0",
+    "@netlify/blobs": "^8.0.0"
+  }
+}

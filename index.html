@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Complete Discipline System</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #0a0a0a;
+      color: #f5f5f5;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      color: #aaa;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    h1 span {
+      color: #a3e635;
+    }
+
+    .subtitle {
+      color: #a3a3a3;
+      font-size: 1.1rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .price-box {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .price {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .price small {
+      font-size: 1rem;
+      color: #888;
+      font-weight: 400;
+    }
+
+    .old-price {
+      text-decoration: line-through;
+      color: #666;
+      font-size: 1.2rem;
+      margin-left: 8px;
+    }
+
+    .features {
+      list-style: none;
+      margin: 24px 0 0;
+      text-align: left;
+    }
+
+    .features li {
+      padding: 8px 0;
+      color: #ccc;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .features li::before {
+      content: "✓";
+      color: #a3e635;
+      font-weight: bold;
+    }
+
+    .section {
+      margin: 48px 0;
+    }
+
+    .section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .payment-instructions {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .payment-instructions ol {
+      padding-left: 20px;
+      color: #ccc;
+    }
+
+    .payment-instructions li {
+      margin-bottom: 10px;
+    }
+
+    .account-box {
+      background: #1a1a1a;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 16px 0;
+      font-family: monospace;
+      font-size: 1.1rem;
+      text-align: center;
+      border: 1px dashed #333;
+    }
+
+    form {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 16px;
+      padding: 28px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 6px;
+      margin-top: 16px;
+    }
+
+    label:first-child {
+      margin-top: 0;
+    }
+
+    input, select {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    input:focus, select:focus {
+      border-color: #a3e635;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 500px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+      h1 {
+        font-size: 1.9rem;
+      }
+    }
+
+    button {
+      width: 100%;
+      background: #a3e635;
+      color: #000;
+      border: none;
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 24px;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #bef264;
+    }
+
+    button:disabled {
+      background: #444;
+      color: #888;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      display: none;
+    }
+
+    .message.success {
+      background: #14261a;
+      border: 1px solid #166534;
+      color: #86efac;
+      display: block;
+    }
+
+    .message.error {
+      background: #2a1215;
+      border: 1px solid #7f1d1d;
+      color: #fca5a5;
+      display: block;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      color: #555;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">ONE-TIME PAYMENT · INSTANT DOWNLOAD</div>
+      <h1>The Complete<br><span>Discipline System</span></h1>
+      <p class="subtitle">
+        A practical system for people who are done negotiating with themselves.
+        No motivation hacks. Just structure that actually works.
+      </p>
+    </header>
+
+    <div class="price-box">
+      <div class="price">22 <small>ETB</small> <span class="old-price">39 ETB</span></div>
+      <ul class="features">
+        <li>63-page PDF system</li>
+        <li>90-day challenge tracker</li>
+        <li>Printable daily habit sheets</li>
+        <li>Relapse protocol</li>
+        <li>Lifetime access + free updates</li>
+      </ul>
+    </div>
+
+    <!-- PAYMENT INSTRUCTIONS -->
+    <div class="section">
+      <h2>How to pay</h2>
+      <div class="payment-instructions">
+        <ol>
+          <li>Send exactly <strong>22 ETB</strong> to one of the accounts below.</li>
+          <li>Copy the transaction reference (or receipt number).</li>
+          <li>Fill the form below and submit.</li>
+          <li>You will receive the download link by email within seconds.</li>
+        </ol>
+
+        <div class="account-box">
+          <div style="color:#888; font-size:0.85rem; margin-bottom:6px;">Telebirr</div>
+          <strong>0931 620 143</strong>
+        </div>
+
+        <div class="account-box">
+          <div style="color:#888; font-size:0.85rem; margin-bottom:6px;">CBE Account</div>
+          <strong>1000 3747 11788</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="section">
+      <h2>Confirm your payment</h2>
+      <form id="paymentForm">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" placeholder="Abebe Kebede" required />
+
+        <label for="email">Email (where we send the download)</label>
+        <input type="email" id="email" name="email" placeholder="you@email.com" required />
+
+        <div class="row">
+          <div>
+            <label for="bank">Bank / Wallet</label>
+            <select id="bank" name="bank" required>
+              <option value="">Select...</option>
+              <option value="telebirr">Telebirr</option>
+              <option value="cbe">CBE</option>
+              <option value="boa">Bank of Abyssinia</option>
+              <option value="cbebirr">CBE Birr</option>
+              <option value="dashen">Dashen</option>
+              <option value="awash">Awash</option>
+            </select>
+          </div>
+          <div>
+            <label for="reference">Transaction Reference</label>
+            <input type="text" id="reference" name="reference" placeholder="e.g. FT1234567890" required />
+          </div>
+        </div>
+
+        <!-- Only shown for CBE / BOA -->
+        <div id="suffixField" style="display:none;">
+          <label for="accountSuffix">Account Suffix</label>
+          <input type="text" id="accountSuffix" name="accountSuffix" 
+                 placeholder="Last 8 digits (CBE) or 5 digits (BOA)" />
+        </div>
+
+        <!-- Only shown for CBE Birr -->
+        <div id="phoneField" style="display:none;">
+          <label for="phone">Phone Number (CBE Birr)</label>
+          <input type="text" id="phone" name="phone" placeholder="09xxxxxxxx" />
+        </div>
+
+        <button type="submit" id="submitBtn">Verify Payment & Get Download</button>
+
+        <div id="message" class="message"></div>
+      </form>
+    </div>
+
+    <footer>
+      Secure verification powered by Verify.ET · Instant delivery
+    </footer>
+  </div>
+
+  <script>
+    const bankSelect = document.getElementById("bank");
+    const suffixField = document.getElementById("suffixField");
+    const phoneField = document.getElementById("phoneField");
+    const form = document.getElementById("paymentForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const messageEl = document.getElementById("message");
+
+    // Show/hide extra fields based on bank
+    bankSelect.addEventListener("change", () => {
+      const bank = bankSelect.value;
+      suffixField.style.display = (bank === "cbe" || bank === "boa") ? "block" : "none";
+      phoneField.style.display = bank === "cbebirr" ? "block" : "none";
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      messageEl.className = "message";
+      messageEl.style.display = "none";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Verifying payment...";
+
+      const payload = {
+        fullName: document.getElementById("fullName").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        bank: document.getElementById("bank").value,
+        reference: document.getElementById("reference").value.trim(),
+        accountSuffix: document.getElementById("accountSuffix").value.trim() || undefined,
+        phone: document.getElementById("phone").value.trim() || undefined,
+      };
+
+      try {
+        const res = await fetch("/.netlify/functions/verify-payment", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          messageEl.className = "message success";
+          messageEl.innerHTML = `
+            ✅ Payment verified!<br>
+            Check your email (<strong>${payload.email}</strong>) for the download link.
+          `;
+          form.reset();
+          suffixField.style.display = "none";
+          phoneField.style.display = "none";
+        } else {
+          messageEl.className = "message error";
+          messageEl.textContent = data.message || "Verification failed. Please check your details.";
+        }
+      } catch (err) {
+        messageEl.className = "message error";
+        messageEl.textContent = "Network error. Please try again.";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Verify Payment & Get Download";
+      }
+    });
+  </script>
+</body>
+</html>
