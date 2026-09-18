@@ -347,6 +347,23 @@
   </div>
 
   <script>
+    const OLD_PRICE = "${process.env.OLD_PRICE}";
+    const NEW_PRICE = "${process.env.NEW_PRICE}";
+
+    const TELEBIRR_NUMBER = "${process.env.TELEBIRR_NUMBER}";
+    const CBE_ACCOUNT_NUMBER = "${process.env.CBE_ACCOUNT_NUMBER}";
+    const TELEBIRR_ACCOUNT_NAME = "${process.env.TELEBIRR_ACCOUNT_NAME}";
+    const CBE_ACCOUNT_NAME = "${process.env.CBE_ACCOUNT_NAME}";
+
+    //add to html
+    document.querySelector(".price").innerHTML = `${NEW_PRICE} <small>ETB</small> <span class="old-price">${OLD_PRICE} ETB</span>`;
+
+
+    document.querySelector(".account-box strong").textContent = process.env.TELEBIRR_NUMBER;
+    document.querySelectorAll(".account-box")[1].querySelector("strong").textContent = process.env.CBE_ACCOUNT_NUMBER;
+    document.querySelectorAll(".account-box")[1].querySelector("div").textContent = process.env.CBE_ACCOUNT_NAME;
+    document.querySelectorAll(".account-box")[0].querySelector("div").textContent = process.env.TELEBIRR_ACCOUNT_NAME;
+
     const bankSelect = document.getElementById("bank");
     const suffixField = document.getElementById("suffixField");
     const phoneField = document.getElementById("phoneField");
@@ -387,27 +404,39 @@
 
         const data = await res.json();
 
-        if (data.success) {
-          messageEl.className = "message success";
-          messageEl.innerHTML = `
-            ✅ Payment verified!<br>
-            Check your email (<strong>${payload.email}</strong>) for the download link.
-          `;
-          form.reset();
-          suffixField.style.display = "none";
-          phoneField.style.display = "none";
-        } else {
-          messageEl.className = "message error";
-          messageEl.textContent = data.message || "Verification failed. Please check your details.";
-        }
-      } catch (err) {
+        if (data.success === true) {
+        // SUCCESS
+        messageEl.className = "message success";
+        messageEl.style.display = "block";
+        messageEl.innerHTML = `
+          ✅ <strong>Payment verified!</strong><br><br>
+          Check your email (<strong>${payload.email}</strong>) for the download link.<br>
+          ${data.downloadUrl ? `<br><a href="${data.downloadUrl}" style="color:#a3e635;">Or click here to download now</a>` : ""}
+        `;
+
+        // Optional: reset form after success
+        // form.reset();
+        // suffixField.style.display = "none";
+        // phoneField.style.display = "none";
+      } else {
+        // ERROR from server
         messageEl.className = "message error";
-        messageEl.textContent = "Network error. Please try again.";
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Verify Payment & Get Download";
+        messageEl.style.display = "block";
+        messageEl.innerHTML = `
+          ❌ <strong>Verification failed</strong><br><br>
+          ${data.message || "Please check your transaction reference and try again."}
+        `;
       }
-    });
+    } catch (err) {
+      console.error("Fetch error:", err);
+      messageEl.className = "message error";
+      messageEl.style.display = "block";
+      messageEl.innerHTML = `❌ Network error. Please try again.<br><small>${err.message}</small>`;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Verify Payment & Get Download";
+    }
+  });
   </script>
 </body>
 </html>
