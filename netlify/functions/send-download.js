@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import { getStore } from "@netlify/blobs";
-
+const PRODUCT_NAME = process.env.PRODUCT_NAME;
 const DOWNLOAD_SECRET = process.env.DOWNLOAD_SECRET;
-
+  
 function verifyToken(token) {
   try {
     const decoded = Buffer.from(token, "base64url").toString();
@@ -46,7 +46,7 @@ export default async (req) => {
   // Option A: Serve from Netlify Blobs
   try {
     const store = getStore("digital-products");
-    const file = await store.get("discipline-system.pdf", {
+    const file = await store.get(`${PRODUCT_NAME}.pdf`, {
       type: "stream",
     });
 
@@ -58,7 +58,7 @@ export default async (req) => {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="Complete-Discipline-System.pdf"`,
+        "Content-Disposition": `attachment; filename="${PRODUCT_NAME}.pdf"`,
         "Cache-Control": "no-store",
       },
     });
