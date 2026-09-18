@@ -346,9 +346,30 @@
     </footer>
   </div>
 
-  <script>
-    form.addEventListener("submit", async (e) => {
+<script>
+  console.log("Script loaded");
+
+  const bankSelect = document.getElementById("bank");
+  const suffixField = document.getElementById("suffixField");
+  const phoneField = document.getElementById("phoneField");
+  const form = document.getElementById("paymentForm");
+  const submitBtn = document.getElementById("submitBtn");
+  const messageEl = document.getElementById("message");
+
+  if (!form) {
+    console.error("Form not found!");
+  }
+
+  // Show/hide extra fields
+  bankSelect.addEventListener("change", () => {
+    const bank = bankSelect.value;
+    suffixField.style.display = (bank === "cbe" || bank === "boa") ? "block" : "none";
+    phoneField.style.display = bank === "cbebirr" ? "block" : "none";
+  });
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    console.log("Form submitted");
 
     messageEl.className = "message";
     messageEl.style.display = "none";
@@ -357,51 +378,66 @@
     submitBtn.disabled = true;
     submitBtn.textContent = "Verifying payment...";
 
-  const payload = {
-    fullName: document.getElementById("fullName").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    bank: document.getElementById("bank").value,
-    reference: document.getElementById("reference").value.trim(),
-    accountSuffix: document.getElementById("accountSuffix").value.trim() || undefined,
-    phone: document.getElementById("phone").value.trim() || undefined,
-  };
+    const payload = {
+      fullName: document.getElementById("fullName").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      bank: document.getElementById("bank").value,
+      reference: document.getElementById("reference").value.trim(),
+      accountSuffix: document.getElementById("accountSuffix")?.value.trim() || undefined,
+      phone: document.getElementById("phone")?.value.trim() || undefined,
+    };
 
-  try {
-    const res = await fetch("/.netlify/functions/verify-payment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    console.log("Payload:", payload);
 
-    const data = await res.json();
-    console.log("Server response:", data);
+    try {
+      console.log("Sending request to function...");
 
-    if (data.success === true) {
-      // Save data so the success page can use it
-      sessionStorage.setItem("downloadUrl", data.downloadUrl || "");
-      sessionStorage.setItem("customerEmail", payload.email);
-      sessionStorage.setItem("orderId", data.orderId || "");
+      const res = await fetch("/.netlify/functions/verify-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-      // Redirect to success page
-      window.location.href = "/success.html";
-    } else {
+      console.log("Response status:", res.status);
+
+      const data = await res.json();
+      console.log("Response data:", data);
+
+      if (data.success === true) {
+        console.log("Success! Saving to sessionStorage and redirecting...");
+
+        // Save data
+        sessionStorage.setItem("downloadUrl", data.downloadUrl || "");
+        sessionStorage.setItem("customerEmail", payload.email);
+        sessionStorage.setItem("orderId", data.orderId || "");
+
+        console.log("sessionStorage set:", {
+          downloadUrl: sessionStorage.getItem("downloadUrl"),
+          email: sessionStorage.getItem("customerEmail")
+        });
+
+        // Redirect
+        window.location.href = "/success.html";
+      } else {
+        console.log("Verification failed:", data.message);
+        messageEl.className = "message error";
+        messageEl.style.display = "block";
+        messageEl.innerHTML = `
+          ❌ <strong>Verification failed</strong><br><br>
+          ${data.message || "Please check your transaction reference and try again."}
+        `;
+      }
+    } catch (err) {
+      console.error("Error:", err);
       messageEl.className = "message error";
       messageEl.style.display = "block";
-      messageEl.innerHTML = `
-        ❌ <strong>Verification failed</strong><br><br>
-        ${data.message || "Please check your transaction reference and try again."}
-      `;
+      messageEl.innerHTML = `❌ Error: ${err.message}`;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Verify Payment & Get Download";
     }
-  } catch (err) {
-    console.error(err);
-    messageEl.className = "message error";
-    messageEl.style.display = "block";
-    messageEl.innerHTML = `❌ Network error. Please try again.<br><small>${err.message}</small>`;
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Verify Payment & Get Download";
-  }
-});
+  });
+</script>
   </script>
 </body>
 </html>
