@@ -80,7 +80,7 @@ export default async (req) => {
     console.log("Files in store:", listed.blobs.map(b => b.key));
 
     // 4. Try to get the file
-    const key = "discipline-system.pdf";
+    const key = "Product_01.pdf";
     console.log("Trying to get key:", key);
 
     const fileData = await store.get(key, { type: "arrayBuffer" });
