@@ -120,6 +120,7 @@ export default async (req) => {
     }
 
     const paidAmount = Number(verification.amount || 0);
+    console.log(`Paid amount: ${paidAmount} ETB, Expected: ${EXPECTED_PRICE} ETB`);
     if (paidAmount < EXPECTED_PRICE) {
       return new Response(
         JSON.stringify({
@@ -128,6 +129,19 @@ export default async (req) => {
         }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
+    }
+
+    console.log('settlement account matching')
+    if (verification.settlementAccountMatch) {
+      if (verification.settlementAccountMatch.matched === false) {
+        return new Response(
+          JSON.stringify({
+            success: false,
+            message: "Payment verified, but it was not sent to the correct account.",
+          }),
+          { status: 400, headers: { "Content-Type": "application/json" } }
+        );
+      }
     }
 
     // ===== Success - create download token =====

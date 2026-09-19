@@ -404,20 +404,20 @@
       console.log("Response data:", data);
 
       if (data.success === true) {
-        console.log("Success! Saving to sessionStorage and redirecting...");
+      //   console.log("Success! Saving to sessionStorage and redirecting...");
 
-        // Save data
-        sessionStorage.setItem("downloadUrl", data.downloadUrl || "");
-        sessionStorage.setItem("customerEmail", payload.email);
-        sessionStorage.setItem("orderId", data.orderId || "");
+      //   // Save data
+      //   sessionStorage.setItem("downloadUrl", data.downloadUrl || "");
+      //   sessionStorage.setItem("customerEmail", payload.email);
+      //   sessionStorage.setItem("orderId", data.orderId || "");
 
-        console.log("sessionStorage set:", {
-          downloadUrl: sessionStorage.getItem("downloadUrl"),
-          email: sessionStorage.getItem("customerEmail")
-        });
+      //   console.log("sessionStorage set:", {
+      //     downloadUrl: sessionStorage.getItem("downloadUrl"),
+      //     email: sessionStorage.getItem("customerEmail")
+      //   });
 
         // Redirect
-        window.location.href = "/success.html";
+        // window.location.href = "/success.html";
       } else {
         console.log("Verification failed:", data.message);
         messageEl.className = "message error";
